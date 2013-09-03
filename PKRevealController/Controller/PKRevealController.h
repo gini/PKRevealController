@@ -107,6 +107,8 @@ extern NSString * const PKRevealControllerRecognizesResetTapOnFrontViewKey;
 typedef void(^PKDefaultCompletionHandler)(BOOL finished);
 typedef void(^PKDefaultErrorHandler)(NSError *error);
 
+@protocol PKRevealControllerDelegate;
+
 @interface PKRevealController : UIViewController <UIGestureRecognizerDelegate>
 
 #pragma mark - Properties
@@ -121,6 +123,7 @@ typedef void(^PKDefaultErrorHandler)(NSError *error);
 @property (nonatomic, assign, readonly) BOOL isPresentationModeActive;
 
 @property (nonatomic, strong, readonly) NSDictionary *options;
+@property (nonatomic, weak, readwrite) id<PKRevealControllerDelegate> delegate;
 
 @property (nonatomic, assign, readwrite) CGFloat animationDuration;
 @property (nonatomic, assign, readwrite) UIViewAnimationCurve animationCurve;
@@ -265,5 +268,21 @@ typedef void(^PKDefaultErrorHandler)(NSError *error);
  * @return BOOL - Returns YES if the reveal controller has a left side, NO otherwise.
  */
 - (BOOL)hasLeftViewController;
+
+@end
+
+
+@protocol PKRevealControllerDelegate <NSObject>
+
+//- (void) revealController:(PKRevealController*)controller willShowViewController:(UIViewController*)viewController;
+// There are 3 states: LEFT_TOTALLY_OPEN, LEFT_PARTIALLY_OPEN, MIDDLE, RIGHT_PARTIALLY_OPEN, RIGHT_TOTATLLY_OPEN
+// The content offset goes in the interval of [-1.0, 1.0]
+// Should I report every change (like didScroll) or should I report every time the position changes? Maybe to do an animation with alpha,
+// Maybe I don't want to report every state, only when it changes position.
+
+- (void) revealControllerDidScroll:(PKRevealController *)controller;
+- (void) revealControllerDidStartDragging:(PKRevealController*)controller;
+- (void) revealControllerDidEndDragging:(PKRevealController*)controller willDecelerate:(BOOL)willDecelerate;
+- (void) revealControllerDidEndDecelerating:(PKRevealController*)controller;
 
 @end
