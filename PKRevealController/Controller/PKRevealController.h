@@ -274,11 +274,7 @@ typedef void(^PKDefaultErrorHandler)(NSError *error);
 
 @protocol PKRevealControllerDelegate <NSObject>
 
-//- (void) revealController:(PKRevealController*)controller willShowViewController:(UIViewController*)viewController;
-// There are 3 states: LEFT_TOTALLY_OPEN, LEFT_PARTIALLY_OPEN, MIDDLE, RIGHT_PARTIALLY_OPEN, RIGHT_TOTATLLY_OPEN
-// The content offset goes in the interval of [-1.0, 1.0]
-// Should I report every change (like didScroll) or should I report every time the position changes? Maybe to do an animation with alpha,
-// Maybe I don't want to report every state, only when it changes position.
+@optional
 
 - (void) revealControllerDidScroll:(PKRevealController *)controller;
 - (void) revealControllerDidStartDragging:(PKRevealController*)controller;
